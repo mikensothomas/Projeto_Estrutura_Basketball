@@ -122,7 +122,6 @@ void desenfileirar(Fila* fila) {
 }
 
 void empilhar(Pilha* pilha, Lista* lista, Fila* fila, char jogador[], char tipoEstatistica[]) {
-    // Verifica se o jogador existe na lista de eventos
     NO* jogadorAtual = lista->inicio_lista;
     int jogadorEncontrado = 0;
 
@@ -134,7 +133,6 @@ void empilhar(Pilha* pilha, Lista* lista, Fila* fila, char jogador[], char tipoE
         jogadorAtual = jogadorAtual->proximo;
     }
 
-    // Se o jogador não foi encontrado na lista de eventos, verifica na fila de substituições
     if (!jogadorEncontrado) {
         NoFila* filaAtual = fila->inicio_fila;
         while (filaAtual != NULL) {
@@ -146,13 +144,11 @@ void empilhar(Pilha* pilha, Lista* lista, Fila* fila, char jogador[], char tipoE
         }
     }
 
-    // Se o jogador não foi encontrado, exibe uma mensagem de erro
     if (!jogadorEncontrado) {
         printf("Erro: O jogador %s não existe na lista de eventos ou na fila de substituições.\n", jogador);
         return;
     }
 
-    // Se o jogador foi encontrado, empilha as estatísticas
     NoPilha* novoNo = (NoPilha*)malloc(sizeof(NoPilha));
     strcpy(novoNo->jogador, jogador);
     strcpy(novoNo->tipoEstatistica, tipoEstatistica);
