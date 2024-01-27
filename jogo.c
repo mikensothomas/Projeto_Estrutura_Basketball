@@ -35,7 +35,7 @@ typedef struct Pilha {
     NoPilha* topo;
 } Pilha;
 
-void adicionarEvento(Lista* lista, char jogador[], char tipoEvento[], int tempo_de_jogo) {
+void adicionarJogadorComEvento(Lista* lista, char jogador[], char tipoEvento[], int tempo_de_jogo) {
     NoLista* novoNo = (NoLista*)malloc(sizeof(NoLista));
     strcpy(novoNo->jogador, jogador);
     strcpy(novoNo->tipo_de_vento, tipoEvento);
@@ -226,7 +226,7 @@ int main() {
                 scanf("%s", tipoEvento);
                 printf("Digite o tempo de jogo: ");
                 scanf("%d", &tempo);
-                adicionarEvento(&listaEventos, jogador, tipoEvento, tempo);
+                adicionarJogadorComEvento(&listaEventos, jogador, tipoEvento, tempo);
                 break;
             }
             case 2: {
@@ -272,6 +272,12 @@ int main() {
                 break;
             case 8:
                 imprimirEstatisticas(&pilhaEstatisticas);
+                break;
+            case 9:
+                char jogador[20];
+                printf("Digite o nome do jogador a ser removido: ");
+                scanf("%s", jogador);
+                removerJogador(&listaEventos, jogador);
                 break;
             case 0:
                 printf("Saindo do programa.\n");
