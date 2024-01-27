@@ -2,15 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct NO {
+typedef struct NoLista {
     char jogador[50];
     char tipo_de_vento[20];
     int tempo_de_jogo;
-    struct NO* proximo;
-} NO;
+    struct NoLista* proximo;
+} NoLista;
 
 typedef struct Lista {
-    NO* inicio_lista;
+    NoLista* inicio_lista;
 } Lista;
 
 typedef struct NoFila {
@@ -27,6 +27,7 @@ typedef struct Fila {
 typedef struct NoPilha {
     char jogador[50];
     char tipoEstatistica[20];
+    int ponto;
     struct NoPilha* proximo;
 } NoPilha;
 
@@ -35,7 +36,7 @@ typedef struct Pilha {
 } Pilha;
 
 void adicionarEvento(Lista* lista, char jogador[], char tipoEvento[], int tempo_de_jogo) {
-    NO* novoNo = (NO*)malloc(sizeof(NO));
+    NoLista* novoNo = (NoLista*)malloc(sizeof(NoLista));
     strcpy(novoNo->jogador, jogador);
     strcpy(novoNo->tipo_de_vento, tipoEvento);
     novoNo->tempo_de_jogo = tempo_de_jogo;
@@ -44,8 +45,8 @@ void adicionarEvento(Lista* lista, char jogador[], char tipoEvento[], int tempo_
 }
 
 void removerJogador(Lista* lista, char jogador[]) {
-    NO* atual = lista->inicio_lista;
-    NO* anterior = NULL;
+    NoLista* atual = lista->inicio_lista;
+    NoLista* anterior = NULL;
 
     while (atual != NULL) {
         if (strcmp(atual->jogador, jogador) == 0) {
@@ -65,7 +66,7 @@ void removerJogador(Lista* lista, char jogador[]) {
 }
 
 void enfileirar(Fila* fila, Lista* lista, char jogadorEntrando[], char jogadorSaindo[]) {
-    NO* jogadorAtual = lista->inicio_lista;
+    NoLista* jogadorAtual = lista->inicio_lista;
     int jogadorEncontrado = 0;
 
     while (jogadorAtual != NULL) {
@@ -121,8 +122,8 @@ void desenfileirar(Fila* fila) {
     free(temp);
 }
 
-void empilhar(Pilha* pilha, Lista* lista, Fila* fila, char jogador[], char tipoEstatistica[]) {
-    NO* jogadorAtual = lista->inicio_lista;
+void empilhar(Pilha* pilha, Lista* lista, Fila* fila, char jogador[], char tipoEstatistica[], int ponto) {
+    NoLista* jogadorAtual = lista->inicio_lista;
     int jogadorEncontrado = 0;
 
     while (jogadorAtual != NULL) {
@@ -158,6 +159,16 @@ void empilhar(Pilha* pilha, Lista* lista, Fila* fila, char jogador[], char tipoE
     printf("Estatistica empilhada para o jogador %s.\n", jogador);
 }
 
+void imprimirEstatisticas(Pilha* pilha) {
+    printf("\nEstatisticas Empilhadas:\n");
+
+    NoPilha* atual = pilha->topo;
+    while (atual != NULL) {
+        printf("Jogador: %s, Tipo: %s, Ponto: %i\n", atual->jogador, atual->tipoEstatistica, atual->ponto);
+        atual = atual->proximo;
+    }
+}
+
 
 void desempilhar(Pilha* pilha) {
     if (pilha->topo == NULL) {
@@ -191,6 +202,7 @@ int main() {
         printf("\t5 - Desempilhar Estatistica\n");
         printf("\t6 - Exibir Eventos da Partida\n");
         printf("\t7 - Imprimir imprimir Substituicoes\n");
+        printf("\t8 - Imprimir as estatísticas\n");
         printf("\t0 - Sair\n");
 
         printf("Escolha uma opcao: ");
@@ -226,11 +238,14 @@ int main() {
             case 4: {
                 char jogador[50];
                 char tipoEstatistica[20];
+                int ponto;
                 printf("Digite o nome do jogador: ");
                 scanf("%s", jogador);
                 printf("Digite o tipo da estatistica: ");
                 scanf("%s", tipoEstatistica);
-                empilhar(&pilhaEstatisticas, &listaEventos, &filaSubstituicoes, jogador, tipoEstatistica);
+                printf("Digite a quantidade de ponto: ");
+                scanf("%i", &ponto);
+                empilhar(&pilhaEstatisticas, &listaEventos, &filaSubstituicoes, jogador, tipoEstatistica, ponto);
                 break;
             }
             case 5:
@@ -238,7 +253,7 @@ int main() {
                 break;
             case 6: {
                 printf("\nEventos da Partida:\n");
-                NO* eventoAtual = listaEventos.inicio_lista;
+                NoLista* eventoAtual = listaEventos.inicio_lista;
                 while (eventoAtual != NULL) {
                     printf("Jogador: %s, Tipo: %s, Tempo: %d\n", eventoAtual->jogador, eventoAtual->tipo_de_vento, eventoAtual->tempo_de_jogo);
                     eventoAtual = eventoAtual->proximo;
@@ -247,6 +262,9 @@ int main() {
             }
             case 7:
                 imprimirSubstituicoes(&filaSubstituicoes);
+                break;
+            case 8:
+                imprimirEstatisticas(&pilhaEstatisticas);
                 break;
             case 0:
                 printf("Saindo do programa.\n");
