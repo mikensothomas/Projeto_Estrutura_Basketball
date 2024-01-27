@@ -153,16 +153,21 @@ void empilhar(Pilha* pilha, Lista* lista, Fila* fila, char jogador[], char tipoE
     NoPilha* novoNo = (NoPilha*)malloc(sizeof(NoPilha));
     strcpy(novoNo->jogador, jogador);
     strcpy(novoNo->tipoEstatistica, tipoEstatistica);
+    novoNo->ponto = ponto;
     novoNo->proximo = pilha->topo;
     pilha->topo = novoNo;
-
-    printf("Estatistica empilhada para o jogador %s.\n", jogador);
 }
 
+
 void imprimirEstatisticas(Pilha* pilha) {
+    NoPilha* atual = pilha->topo;
     printf("\nEstatisticas Empilhadas:\n");
 
-    NoPilha* atual = pilha->topo;
+    if (pilha->topo == NULL) {
+        printf("Pilha vazia.\n");
+        return;
+    }
+
     while (atual != NULL) {
         printf("Jogador: %s, Tipo: %s, Ponto: %i\n", atual->jogador, atual->tipoEstatistica, atual->ponto);
         atual = atual->proximo;
@@ -201,7 +206,7 @@ int main() {
         printf("\t4 - Empilhar Estatistica\n");
         printf("\t5 - Desempilhar Estatistica\n");
         printf("\t6 - Exibir Eventos da Partida\n");
-        printf("\t7 - Imprimir imprimir Substituicoes\n");
+        printf("\t7 - Imprimir Substituicoes\n");
         printf("\t8 - Imprimir as estatísticas\n");
         printf("\t0 - Sair\n");
 
