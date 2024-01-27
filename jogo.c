@@ -121,13 +121,47 @@ void desenfileirar(Fila* fila) {
     free(temp);
 }
 
-void empilhar(Pilha* pilha, char jogador[], char tipoEstatistica[]) {
+void empilhar(Pilha* pilha, Lista* lista, Fila* fila, char jogador[], char tipoEstatistica[]) {
+    // Verifica se o jogador existe na lista de eventos
+    NO* jogadorAtual = lista->inicio_lista;
+    int jogadorEncontrado = 0;
+
+    while (jogadorAtual != NULL) {
+        if (strcmp(jogadorAtual->jogador, jogador) == 0) {
+            jogadorEncontrado = 1;
+            break;
+        }
+        jogadorAtual = jogadorAtual->proximo;
+    }
+
+    // Se o jogador não foi encontrado na lista de eventos, verifica na fila de substituições
+    if (!jogadorEncontrado) {
+        NoFila* filaAtual = fila->inicio_fila;
+        while (filaAtual != NULL) {
+            if (strcmp(filaAtual->jogadorEntrando, jogador) == 0) {
+                jogadorEncontrado = 1;
+                break;
+            }
+            filaAtual = filaAtual->proximo;
+        }
+    }
+
+    // Se o jogador não foi encontrado, exibe uma mensagem de erro
+    if (!jogadorEncontrado) {
+        printf("Erro: O jogador %s não existe na lista de eventos ou na fila de substituições.\n", jogador);
+        return;
+    }
+
+    // Se o jogador foi encontrado, empilha as estatísticas
     NoPilha* novoNo = (NoPilha*)malloc(sizeof(NoPilha));
     strcpy(novoNo->jogador, jogador);
     strcpy(novoNo->tipoEstatistica, tipoEstatistica);
     novoNo->proximo = pilha->topo;
     pilha->topo = novoNo;
+
+    printf("Estatistica empilhada para o jogador %s.\n", jogador);
 }
+
 
 void desempilhar(Pilha* pilha) {
     if (pilha->topo == NULL) {
@@ -200,7 +234,7 @@ int main() {
                 scanf("%s", jogador);
                 printf("Digite o tipo da estatistica: ");
                 scanf("%s", tipoEstatistica);
-                empilhar(&pilhaEstatisticas, jogador, tipoEstatistica);
+                empilhar(&pilhaEstatisticas, &listaEventos, &filaSubstituicoes, jogador, tipoEstatistica);
                 break;
             }
             case 5:
