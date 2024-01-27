@@ -187,6 +187,64 @@ void desempilhar(Pilha* pilha) {
     free(temp);
 }
 
+void removerJogadorDoJogo(Lista* lista, Fila* fila, char jogador[]) {
+    NoLista* atualEvento = lista->inicio_lista;
+    NoLista* anteriorEvento = NULL;
+
+    while (atualEvento != NULL) {
+        if (strcmp(atualEvento->jogador, jogador) == 0) {
+            if (anteriorEvento == NULL) {
+                lista->inicio_lista = atualEvento->proximo;
+            } else {
+                anteriorEvento->proximo = atualEvento->proximo;
+            }
+            free(atualEvento);
+            return;
+        }
+        anteriorEvento = atualEvento;
+        atualEvento = atualEvento->proximo;
+    }
+
+    NoFila* atualFila = fila->inicio_fila;
+    NoFila* anteriorFila = NULL;
+
+    while (atualFila != NULL) {
+        if (strcmp(atualFila->jogadorEntrando, jogador) == 0 || strcmp(atualFila->jogadorSaindo, jogador) == 0) {
+            if (anteriorFila == NULL) {
+                fila->inicio_fila = atualFila->proximo;
+            } else {
+                anteriorFila->proximo = atualFila->proximo;
+            }
+            free(atualFila);
+            return;
+        }
+        anteriorFila = atualFila;
+        atualFila = atualFila->proximo;
+    }
+
+    printf("Erro: O jogador %s não existe no jogo.\n", jogador);
+}
+
+char* buscarJogadorNoJogo(Lista* lista, Fila* fila, char jogador[]) {
+    NoLista* eventoAtual = lista->inicio_lista;
+    while (eventoAtual != NULL) {
+        if (strcmp(eventoAtual->jogador, jogador) == 0) {
+            return eventoAtual->jogador;
+        }
+        eventoAtual = eventoAtual->proximo;
+    }
+
+    NoFila* filaAtual = fila->inicio_fila;
+    while (filaAtual != NULL) {
+        if (strcmp(filaAtual->jogadorEntrando, jogador) == 0 || strcmp(filaAtual->jogadorSaindo, jogador) == 0) {
+            return filaAtual->jogadorEntrando;
+        }
+        filaAtual = filaAtual->proximo;
+    }
+
+    return "Jogador não encontrado no jogo.";
+}
+
 int main() {
     Lista listaEventos;
     listaEventos.inicio_lista = NULL;
@@ -208,6 +266,8 @@ int main() {
         printf("\t6 - Exibir Eventos da Partida\n");
         printf("\t7 - Imprimir Substituicoes\n");
         printf("\t8 - Imprimir as estatísticas\n");
+        printf("\t9 - Remover jogador\n");
+        printf("\t10 - Buscar joggo\n");
         printf("\t0 - Sair\n");
 
         printf("Escolha uma opcao: ");
