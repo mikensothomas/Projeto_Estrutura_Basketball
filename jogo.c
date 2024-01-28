@@ -239,7 +239,6 @@ void imprimirJogadoresSubstituidos(Fila* fila) {
     }
 }
 
-
 int main() {
     Lista listaEventos;
     listaEventos.inicio_lista = NULL;
