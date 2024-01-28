@@ -187,6 +187,26 @@ void desempilhar(Pilha* pilha) {
     free(temp);
 }
 
+int buscarJogador(Lista* lista, Fila* fila, char jogador[]) {
+    NoLista* eventoAtual = lista->inicio_lista;
+    while (eventoAtual != NULL) {
+        if (strcmp(eventoAtual->jogador, jogador) == 0) {
+            return 1;
+        }
+        eventoAtual = eventoAtual->proximo;
+    }
+
+    NoFila* filaAtual = fila->inicio_fila;
+    while (filaAtual != NULL) {
+        if (strcmp(filaAtual->jogadorEntrando, jogador) == 0 || strcmp(filaAtual->jogadorSaindo, jogador) == 0) {
+            return 2;
+        }
+        filaAtual = filaAtual->proximo;
+    }
+
+    return 0;
+}
+
 int main() {
     Lista listaEventos;
     listaEventos.inicio_lista = NULL;
@@ -209,7 +229,7 @@ int main() {
         printf("\t7 - Imprimir Substituicoes\n");
         printf("\t8 - Imprimir as estatísticas\n");
         printf("\t9 - Remover jogador\n");
-        printf("\t10 - Buscar joggo\n");
+        printf("\t10 - Buscar jogadores\n");
         printf("\t0 - Sair\n");
 
         printf("Escolha uma opcao: ");
@@ -279,6 +299,23 @@ int main() {
                 scanf("%s", jogador);
                 removerJogador(&listaEventos, jogador);
                 break;
+            case 10: {
+                char jogadorBusca[50];
+                printf("Digite o nome do jogador a ser buscado: ");
+                scanf("%s", jogadorBusca);
+
+                int resultadoBusca = buscarJogador(&listaEventos, &filaSubstituicoes, jogadorBusca);
+
+                if (resultadoBusca == 1) {
+                    printf("O jogador %s está na lista de eventos.\n", jogadorBusca);
+                } else if (resultadoBusca == 2) {
+                    printf("O jogador %s está na fila de substituições.\n", jogadorBusca);
+                } else {
+                    printf("O jogador %s não está na lista de eventos nem na fila de substituições.\n", jogadorBusca);
+                }
+                break;
+            }
+
             case 0:
                 printf("Saindo do programa.\n");
                 break;
