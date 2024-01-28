@@ -44,25 +44,49 @@ void adicionarJogadorComEvento(Lista* lista, char jogador[], char tipoEvento[], 
     lista->inicio_lista = novoNo;
 }
 
-void removerJogador(Lista* lista, char jogador[]) {
-    NoLista* atual = lista->inicio_lista;
-    NoLista* anterior = NULL;
+void removerJogador(Lista* lista, Fila* fila, char jogador[]) {
+    char resposta;
+    printf("Você deseja remover um jogador que entrou no início do jogo? (s/n): ");
+    scanf(" %c", &resposta);
 
-    while (atual != NULL) {
-        if (strcmp(atual->jogador, jogador) == 0) {
-            if (anterior == NULL) {
-                lista->inicio_lista = atual->proximo;
-            } else {
-                anterior->proximo = atual->proximo;
+    if (resposta == 's' || resposta == 'S') {
+        char jogadorARemover[50];
+        printf("Digite o nome do jogador a ser removido: ");
+        scanf("%s", jogadorARemover);
+
+        NoLista* atualLista = lista->inicio_lista;
+        NoLista* anteriorLista = NULL;
+
+        // Procurar na lista de eventos
+        while (atualLista != NULL) {
+            if (strcmp(atualLista->jogador, jogadorARemover) == 0) {
+                if (anteriorLista == NULL) {
+                    lista->inicio_lista = atualLista->proximo;
+                } else {
+                    anteriorLista->proximo = atualLista->proximo;
+                }
+                free(atualLista);
+                printf("Jogador removido: %s (na lista de eventos)\n", jogadorARemover);
+                return;
             }
-            free(atual);
-            return;
+            anteriorLista = atualLista;
+            atualLista = atualLista->proximo;
         }
-        anterior = atual;
-        atual = atual->proximo;
-    }
 
-    printf("Erro: O jogador %s não existe na lista.\n", jogador);
+        printf("Erro: O jogador %s não existe na lista de eventos.\n", jogadorARemover);
+    } else if (resposta == 'n' || resposta == 'N') {
+        if (fila->inicio_fila != NULL) {
+            NoFila* tempFila = fila->inicio_fila;
+            fila->inicio_fila = tempFila->proximo;
+
+            printf("Jogador removido: %s (na fila de substituições)\n", tempFila->jogadorEntrando);
+            free(tempFila);
+        } else {
+            printf("Erro: Fila de substituições vazia.\n");
+        }
+    } else {
+        printf("Resposta inválida. Nenhum jogador foi removido.\n");
+    }
 }
 
 void enfileirar(Fila* fila, Lista* lista, char jogadorEntrando[], char jogadorSaindo[]) {
@@ -86,7 +110,7 @@ void enfileirar(Fila* fila, Lista* lista, char jogadorEntrando[], char jogadorSa
     strcpy(novoNo->jogadorEntrando, jogadorEntrando);
     strcpy(novoNo->jogadorSaindo, jogadorSaindo);
     novoNo->proximo = NULL;
-    removerJogador(lista, jogadorSaindo);
+    //removerJogador(lista, jogadorSaindo);
 
     if (fila->final_fila == NULL) {
         fila->inicio_fila = fila->final_fila = novoNo;
@@ -307,9 +331,7 @@ int main() {
                 break;
             case 9:
                 char jogador[20];
-                printf("Digite o nome do jogador a ser removido: ");
-                scanf("%s", jogador);
-                removerJogador(&listaEventos, jogador);
+                removerJogador(&listaEventos, &filaSubstituicoes, jogador);
                 break;
             case 10: {
                 char jogadorBusca[50];
