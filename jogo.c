@@ -90,6 +90,7 @@ void removerJogador(Lista* lista, Fila* fila, char jogador[]) {
 
 void enfileirarSubstituições(Fila* fila, Lista* lista, char jogadorEntrando[], char jogadorSaindo[]) {
     NoLista* jogadorAtual = lista->inicio_lista;
+    NoLista* anteriorLista = NULL;
     int jogadorEncontrado = 0;
 
     while (jogadorAtual != NULL) {
@@ -97,6 +98,7 @@ void enfileirarSubstituições(Fila* fila, Lista* lista, char jogadorEntrando[],
             jogadorEncontrado = 1;
             break;
         }
+        anteriorLista = jogadorAtual;
         jogadorAtual = jogadorAtual->proximo;
     }
 
@@ -104,6 +106,14 @@ void enfileirarSubstituições(Fila* fila, Lista* lista, char jogadorEntrando[],
         printf("Erro: O jogador %s não existe na lista.\n", jogadorSaindo);
         return;
     }
+
+    if (anteriorLista == NULL) {
+        lista->inicio_lista = jogadorAtual->proximo;
+    } else {
+        anteriorLista->proximo = jogadorAtual->proximo;
+    }
+    free(jogadorAtual);
+    printf("Jogador removido: %s (na lista de eventos)\n", jogadorSaindo);
 
     NoFila* novoNo = (NoFila*)malloc(sizeof(NoFila));
     strcpy(novoNo->jogadorEntrando, jogadorEntrando);
@@ -345,7 +355,6 @@ int main() {
                 }
                 break;
             }
-
             case 11:
                 imprimirJogadoresSubstituidos(&filaSubstituicoes);
                 break;
