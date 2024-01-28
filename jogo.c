@@ -57,7 +57,6 @@ void removerJogador(Lista* lista, Fila* fila, char jogador[]) {
         NoLista* atualLista = lista->inicio_lista;
         NoLista* anteriorLista = NULL;
 
-        // Procurar na lista de eventos
         while (atualLista != NULL) {
             if (strcmp(atualLista->jogador, jogadorARemover) == 0) {
                 if (anteriorLista == NULL) {
@@ -89,7 +88,7 @@ void removerJogador(Lista* lista, Fila* fila, char jogador[]) {
     }
 }
 
-void enfileirar(Fila* fila, Lista* lista, char jogadorEntrando[], char jogadorSaindo[]) {
+void enfileirarSubstituições(Fila* fila, Lista* lista, char jogadorEntrando[], char jogadorSaindo[]) {
     NoLista* jogadorAtual = lista->inicio_lista;
     int jogadorEncontrado = 0;
 
@@ -110,7 +109,6 @@ void enfileirar(Fila* fila, Lista* lista, char jogadorEntrando[], char jogadorSa
     strcpy(novoNo->jogadorEntrando, jogadorEntrando);
     strcpy(novoNo->jogadorSaindo, jogadorSaindo);
     novoNo->proximo = NULL;
-    //removerJogador(lista, jogadorSaindo);
 
     if (fila->final_fila == NULL) {
         fila->inicio_fila = fila->final_fila = novoNo;
@@ -130,7 +128,7 @@ void imprimirSubstituicoes(Fila* fila) {
     }
 }
 
-void desenfileirar(Fila* fila) {
+void desenfileirarSubstituicoes(Fila* fila) {
     if (fila->inicio_fila == NULL) {
         printf("Fila de substituições vazia.\n");
         return;
@@ -146,7 +144,7 @@ void desenfileirar(Fila* fila) {
     free(temp);
 }
 
-void empilhar(Pilha* pilha, Lista* lista, Fila* fila, char jogador[], char tipoEstatistica[], int ponto) {
+void empilharEstatisticas(Pilha* pilha, Lista* lista, Fila* fila, char jogador[], char tipoEstatistica[], int ponto) {
     NoLista* jogadorAtual = lista->inicio_lista;
     int jogadorEncontrado = 0;
 
@@ -199,7 +197,7 @@ void imprimirEstatisticas(Pilha* pilha) {
 }
 
 
-void desempilhar(Pilha* pilha) {
+void desempilharEstatisticas(Pilha* pilha) {
     if (pilha->topo == NULL) {
         printf("Pilha de estatísticas vazia.\n");
         return;
@@ -255,18 +253,18 @@ int main() {
     int escolha;
     do {
         printf("\nMENU:\n\n");
-        printf("\t1 - Adicionar Evento\n");
-        printf("\t2 - Enfileirar Substituicao\n");
-        printf("\t3 - Desenfileirar Substituicao\n");
-        printf("\t4 - Empilhar Estatistica\n");
-        printf("\t5 - Desempilhar Estatistica\n");
-        printf("\t6 - Exibir Eventos da Partida\n");
-        printf("\t7 - Imprimir Substituicoes\n");
+        printf("\t1 - Adicionar jogador com Evento\n");
+        printf("\t2 - Enfileirar substituicao\n");
+        printf("\t3 - Desenfileirar substituicao\n");
+        printf("\t4 - Empilhar estatisticas\n");
+        printf("\t5 - Desempilhar estatistica\n");
+        printf("\t6 - Imprimir eventos da Partida\n");
+        printf("\t7 - Imprimir substituicoes\n");
         printf("\t8 - Imprimir as estatísticas\n");
         printf("\t9 - Remover jogador\n");
-        printf("\t10 - Buscar jogadores\n");
+        printf("\t10 - Buscar jogador\n");
         printf("\t11 - Imprimir jogadores substituidos\n");
-        printf("\t0 - Sair\n");
+        printf("\t0 - Sair do programa\n");
 
         printf("Escolha uma opcao: ");
         scanf("%d", &escolha);
@@ -292,11 +290,11 @@ int main() {
                 scanf("%s", jogadorEntrando);
                 printf("Digite o nome do jogador que sai: ");
                 scanf("%s", jogadorSaindo);
-                enfileirar(&filaSubstituicoes, &listaEventos, jogadorEntrando, jogadorSaindo);
+                enfileirarSubstituições(&filaSubstituicoes, &listaEventos, jogadorEntrando, jogadorSaindo);
                 break;
             }
             case 3:
-                desenfileirar(&filaSubstituicoes);
+                desenfileirarSubstituicoes(&filaSubstituicoes);
                 break;
             case 4: {
                 char jogador[50];
@@ -308,11 +306,11 @@ int main() {
                 scanf("%s", tipoEstatistica);
                 printf("Digite a quantidade de ponto: ");
                 scanf("%i", &ponto);
-                empilhar(&pilhaEstatisticas, &listaEventos, &filaSubstituicoes, jogador, tipoEstatistica, ponto);
+                empilharEstatisticas(&pilhaEstatisticas, &listaEventos, &filaSubstituicoes, jogador, tipoEstatistica, ponto);
                 break;
             }
             case 5:
-                desempilhar(&pilhaEstatisticas);
+                desempilharEstatisticas(&pilhaEstatisticas);
                 break;
             case 6: {
                 printf("\nEventos da Partida:\n");
