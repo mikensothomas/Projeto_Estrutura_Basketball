@@ -212,7 +212,7 @@ void imprimirJogadoresSubstituidos(Fila* fila) {
 
     NoFila* atualFila = fila->inicio_fila;
     while (atualFila != NULL) {
-        printf("Jogador que saiu: %s\n", atualFila->jogadorSaindo);
+        printf("%s ", atualFila->jogadorSaindo);
         atualFila = atualFila->proximo;
     }
 }
