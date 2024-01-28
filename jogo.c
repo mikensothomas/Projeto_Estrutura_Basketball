@@ -207,6 +207,18 @@ int buscarJogador(Lista* lista, Fila* fila, char jogador[]) {
     return 0;
 }
 
+void imprimirJogadoresSubstituidos(Fila* fila) {
+    printf("\nJogadores Substituídos:\n");
+
+    // Imprimir jogadores que saíram (estavam na fila de substituições)
+    NoFila* atualFila = fila->inicio_fila;
+    while (atualFila != NULL) {
+        printf("Jogador que saiu: %s\n", atualFila->jogadorSaindo);
+        atualFila = atualFila->proximo;
+    }
+}
+
+
 int main() {
     Lista listaEventos;
     listaEventos.inicio_lista = NULL;
@@ -230,6 +242,7 @@ int main() {
         printf("\t8 - Imprimir as estatísticas\n");
         printf("\t9 - Remover jogador\n");
         printf("\t10 - Buscar jogadores\n");
+        printf("\t11 - Imprimir jogadores substituidos\n");
         printf("\t0 - Sair\n");
 
         printf("Escolha uma opcao: ");
@@ -316,6 +329,9 @@ int main() {
                 break;
             }
 
+            case 11:
+                imprimirJogadoresSubstituidos(&filaSubstituicoes);
+                break;
             case 0:
                 printf("Saindo do programa.\n");
                 break;
