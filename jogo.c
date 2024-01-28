@@ -168,7 +168,7 @@ void empilharEstatisticas(Pilha* pilha, Lista* lista, Fila* fila, char jogador[]
     }
 
     if (!jogadorEncontrado) {
-        printf("Erro: O jogador %s não existe na lista de eventos ou na fila de substituições.\n", jogador);
+        printf("Erro: O jogador %s não existe nem na lista de eventos nem na fila de substituições.\n", jogador);
         return;
     }
 
