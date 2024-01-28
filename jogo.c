@@ -210,7 +210,6 @@ int buscarJogador(Lista* lista, Fila* fila, char jogador[]) {
 void imprimirJogadoresSubstituidos(Fila* fila) {
     printf("\nJogadores Substituídos:\n");
 
-    // Imprimir jogadores que saíram (estavam na fila de substituições)
     NoFila* atualFila = fila->inicio_fila;
     while (atualFila != NULL) {
         printf("Jogador que saiu: %s\n", atualFila->jogadorSaindo);
