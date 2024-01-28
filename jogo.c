@@ -196,7 +196,6 @@ void imprimirEstatisticas(Pilha* pilha) {
     }
 }
 
-
 void desempilharEstatisticas(Pilha* pilha) {
     if (pilha->topo == NULL) {
         printf("Pilha de estatísticas vazia.\n");
