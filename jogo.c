@@ -261,6 +261,7 @@ int main() {
     int escolha;
     do {
         printf("\nMENU:\n\n");
+        printf("\t0 - Sair do programa\n");
         printf("\t1 - Adicionar jogador com Evento\n");
         printf("\t2 - Enfileirar substituicao\n");
         printf("\t3 - Desenfileirar substituicao\n");
@@ -272,7 +273,6 @@ int main() {
         printf("\t9 - Remover jogador\n");
         printf("\t10 - Buscar jogador\n");
         printf("\t11 - Imprimir jogadores substituidos\n");
-        printf("\t0 - Sair do programa\n");
 
         printf("Escolha uma opcao: ");
         scanf("%d", &escolha);
